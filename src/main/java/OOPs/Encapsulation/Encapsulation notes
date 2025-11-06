@@ -1,0 +1,7 @@
+Data Hiding → Phone number/address not directly accessible, prevents misuse.
+
+Validation → Ensure only correct data is set (e.g., phone = 10 digits).
+
+Flexibility → You can change internal logic without affecting other parts of code.
+
+Security → Sensitive info (like payment details, OTP, addresses) stays safe.

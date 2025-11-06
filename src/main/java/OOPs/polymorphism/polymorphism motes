@@ -1,0 +1,153 @@
+Perfect 👍 — **Polymorphism** is one of the most asked OOP topics in Java/Spring Boot interviews. Let me break it down with **definition, types, real-world code, and Spring Boot examples**.
+
+---
+
+## 🔹 What is Polymorphism?
+
+👉 Polymorphism = *"many forms"*
+It allows the **same method name** or **interface** to behave differently depending on the object at runtime.
+
+In Java:
+
+* **Compile-time polymorphism** → achieved by **method overloading**.
+* **Runtime polymorphism** → achieved by **method overriding** (most used in Spring Boot).
+
+---
+
+## 🔹 Types of Polymorphism
+
+### 1. **Compile-time polymorphism (Static binding)**
+
+* Method is resolved at **compile time**.
+* Done using **method overloading** (same method name, different parameters).
+
+```java
+class PaymentService {
+    public void pay(int amount) {
+        System.out.println("Paying " + amount + " using cash");
+    }
+
+    public void pay(int amount, String upiId) {
+        System.out.println("Paying " + amount + " using UPI: " + upiId);
+    }
+}
+```
+
+Usage:
+
+```java
+PaymentService service = new PaymentService();
+service.pay(100);             // Cash
+service.pay(200, "user@upi"); // UPI
+```
+
+---
+
+### 2. **Runtime polymorphism (Dynamic binding)**
+
+* Method is resolved at **runtime**.
+* Achieved using **method overriding + inheritance + upcasting**.
+
+```java
+class PaymentService {
+    public void processPayment() {
+        System.out.println("Processing generic payment");
+    }
+}
+
+class UpiPaymentService extends PaymentService {
+    @Override
+    public void processPayment() {
+        System.out.println("Processing UPI payment");
+    }
+}
+
+class CardPaymentService extends PaymentService {
+    @Override
+    public void processPayment() {
+        System.out.println("Processing Card payment");
+    }
+}
+```
+
+Usage:
+
+```java
+PaymentService payment = new UpiPaymentService();
+payment.processPayment();  // Output: Processing UPI payment
+
+payment = new CardPaymentService();
+payment.processPayment();  // Output: Processing Card payment
+```
+
+---
+
+## 🔹 Why is Polymorphism important in **Spring Boot**?
+
+1. **Dependency Injection (DI)**
+   Spring injects beans polymorphically.
+
+```java
+public interface PaymentService {
+    void processPayment();
+}
+
+@Service
+@Primary
+public class UpiPaymentService implements PaymentService {
+    public void processPayment() {
+        System.out.println("UPI payment processed");
+    }
+}
+
+@Service
+public class CardPaymentService implements PaymentService {
+    public void processPayment() {
+        System.out.println("Card payment processed");
+    }
+}
+
+@RestController
+public class PaymentController {
+    private final PaymentService paymentService;
+
+    // Spring can inject UpiPaymentService OR CardPaymentService
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+    @PostMapping("/pay")
+    public void pay() {
+        paymentService.processPayment();
+    }
+}
+```
+
+Here, **polymorphism lets the controller depend only on the interface**, not a concrete class.
+
+---
+
+2. **Spring Data JPA**
+   Repositories extend `JpaRepository<T, ID>` — Spring generates implementations at runtime.
+
+```java
+public interface OrderRepository extends JpaRepository<Order, Long> {}
+```
+
+You can polymorphically call repository methods on any entity-specific repository.
+
+---
+
+3. **Spring Security**
+   `UserDetailsService` has multiple implementations (`JdbcUserDetailsManager`, `InMemoryUserDetailsManager`).
+   Spring injects the correct implementation polymorphically.
+
+---
+
+## 🔹 Interview-ready Answer (2–3 sentences)
+
+> Polymorphism means "many forms," where the same interface or method can behave differently. In Java, it comes in two forms: **compile-time (overloading)** and **runtime (overriding)**. In Spring Boot, polymorphism is widely used in **dependency injection, JPA repositories, and Spring Security**, where interfaces define contracts and multiple implementations provide different behaviors.
+
+---
+
+👉 Do you also want me to prepare **common interview questions around polymorphism** (like “Why is polymorphism important for Spring DI?” or “Difference between overloading and overriding”)?

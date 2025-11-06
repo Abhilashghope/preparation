@@ -1,0 +1,27 @@
+Code Reuse → No need to repeat id, name, phoneNumber in every user type.
+
+Hierarchy Modeling → Natural mapping: User → Customer, User → DeliveryAgent.
+
+Polymorphism → You can treat all users as User type in APIs.
+
+User u = new Customer(...);
+u.displayInfo();  // works
+
+
+Maintainability → If you add a field like email in User, all child classes get it automatically.
+
+In general OOP, there are 5 types of inheritance:
+
+Single Inheritance
+
+Multilevel Inheritance
+
+Hierarchical Inheritance
+
+Multiple Inheritance
+
+Hybrid Inheritance
+
+But 👉 in Java, only the first three are directly supported with classes.
+
+Java doesn’t support multiple inheritance with classes (to avoid diamond problem), but you can achieve it via interfaces.
