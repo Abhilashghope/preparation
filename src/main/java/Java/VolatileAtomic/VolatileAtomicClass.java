@@ -1,4 +1,4 @@
-package DesignPatterns.VolatileAtomic;
+package Java.VolatileAtomic;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
